@@ -1,4 +1,4 @@
-# Leetcode
+# Leetcode - Code for fun
 **Queue_CwC**
 
 Queue implementation as linked list without recursive functions.
