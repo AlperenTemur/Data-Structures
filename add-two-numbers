@@ -1,0 +1,54 @@
+/**
+https://leetcode.com/problems/add-two-numbers/
+Can be as fast as 28ms, faster than 98.42% of C++ online submissions
+**/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode *curr1=l1,*curr2=l2;
+        int a=l1->val+l2->val;
+        ListNode *l3=new ListNode(a%10),*curr3=l3;
+        curr1=curr1->next;
+        curr2=curr2->next;
+        a/=10;
+        ListNode l4(5),l5(5);//Performance optimization
+        while(curr1&&curr2)
+        {       
+            l4=*curr1;//Performance optimization, decrease number of depointerization
+            l5=*curr2;
+            a+=l4.val+l5.val;
+            curr1=l4.next;
+            curr2=l5.next;
+            curr3=curr3->next=new ListNode(a%10);
+            a/=10;
+        }
+
+        while(curr1)
+        {
+            l4=*curr1;
+            a+=l4.val;
+            curr3=curr3->next=new ListNode(a%10);
+            a/=10;
+            curr1=l4.next;
+        }    
+        while(curr2)
+        {
+            l4=*curr2;
+            a+=l4.val;
+            curr3=curr3->next=new ListNode(a%10);
+            a/=10;
+            curr2=l4.next;
+        }
+        if(a)
+            curr3->next=new ListNode(a);
+        return l3;
+    }
+};
