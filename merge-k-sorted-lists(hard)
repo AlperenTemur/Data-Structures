@@ -1,0 +1,62 @@
+/*
+https://leetcode.com/problems/merge-k-sorted-lists/
+O(nlogk) 
+Faster than up to 99.61% of C++ online submissions for Merge k Sorted Lists.
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+struct S
+    {
+        int val, k;
+        S(int x,int y):val(x),k(y){}
+    };
+class Solution {
+public:
+    
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        ListNode *l=NULL,*it;
+      
+        auto cmp = [](const S x,const S y)->bool {return (x.val>y.val);}; 
+        std::priority_queue<struct S,std::vector<S>,decltype(cmp)> pq(cmp);
+        vector<ListNode*> v;
+        if(lists.size()==0)return l;
+        for(int i=0;i<lists.size();i++)
+        {
+            v.push_back(lists[i]);
+            if(lists[i])
+            {
+            S s(lists[i]->val,i);
+            pq.push(s);
+            }
+        }
+        if(pq.size()==0)return l;
+        int i;
+        i=pq.top().k;
+        it=l=new ListNode(pq.top().val);
+
+        while(1)
+        {
+            pq.pop();
+            v[i]=v[i]->next;
+            if(v[i])
+            {
+              S s(v[i]->val,i);
+              pq.push(s);
+            }
+            else//l->next=new ListNode(pq.top().val);pq.pop();
+            if(pq.size()==0)
+                return l;
+            i=pq.top().k;
+            it=it->next=new ListNode(pq.top().val);
+        }
+        l->next=new ListNode(pq.top().val);pq.pop();
+        l->next->next=new ListNode(pq.top().val);
+        return l;
+    }
+};
